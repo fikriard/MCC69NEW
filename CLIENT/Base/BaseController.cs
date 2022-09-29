@@ -1,8 +1,10 @@
-﻿using CLIENT.Repositories.Interface;
+﻿using API.Repositories.Interface;
+using CLIENT.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Threading.Tasks;
 
 namespace CLIENT.Base
@@ -21,10 +23,11 @@ namespace CLIENT.Base
         [HttpGet]
         public async Task<JsonResult> GetAll()
         {
-            var result = await repository.Get();
+            var result = await repository.GetAll();
             return Json(result);
         }
 
+        //GET BY ID
         [HttpGet]
         public async Task<JsonResult> Get(int id)
         {
@@ -32,6 +35,7 @@ namespace CLIENT.Base
             return Json(result);
         }
 
+        //POST
         [HttpPost]
         public JsonResult Post(TEntity entity)
         {
@@ -39,6 +43,7 @@ namespace CLIENT.Base
             return Json(result);
         }
 
+        //PUT
         [HttpPut]
         public JsonResult Put(int id, TEntity entity)
         {
@@ -46,10 +51,11 @@ namespace CLIENT.Base
             return Json(result);
         }
 
+        //DELETE
         [HttpDelete]
-        public JsonResult Delete(int id)
+        public JsonResult DeleteEntity(int Id)
         {
-            var result = repository.Delete(id);
+            var result = repository.Delete(Id);
             return Json(result);
         }
     }

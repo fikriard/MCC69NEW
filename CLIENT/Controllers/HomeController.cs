@@ -60,5 +60,10 @@ namespace CLIENT.Controllers
             }
             return RedirectToAction("Index", "Country");
         }
+
+        public IActionResult NotFound404()
+        {
+            return View("NotFound");
+        }
     }
 }

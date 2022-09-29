@@ -1,4 +1,6 @@
-﻿using CLIENT.Repositories.Interface;
+﻿using API.Repositories.Interface;
+using CLIENT.Repositories.Interface;
+using CLIENT.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
@@ -29,7 +31,7 @@ namespace CLIENT.Repositories
             {
                 BaseAddress = new Uri(address)
             };
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", _contextAccessor.HttpContext.Session.GetString("token"));
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _contextAccessor.HttpContext.Session.GetString("token"));
         }
 
         public HttpStatusCode Delete(int id)
@@ -38,28 +40,29 @@ namespace CLIENT.Repositories
             return result.StatusCode;
         }
 
-        public async Task<List<Entity>> Get()
+        public async Task<List<Entity>> GetAll()
         {
-            List<Entity> entities = new List<Entity>();
+            Json<Entity> entities = new Json<Entity>();
 
             using (var response = await httpClient.GetAsync(request))
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
-                entities = JsonConvert.DeserializeObject<List<Entity>>(apiResponse);
+                entities = JsonConvert.DeserializeObject<Json<Entity>>(apiResponse);
             }
-            return entities;
+            return entities.data;
         }
 
-        public async Task<Entity> Get(int id)
+        public async Task<Entity> Get(int? id)
         {
-            Entity entity = null;
+            //Entity entity = null;
+            Results<Entity> entity = new Results<Entity>();
 
             using (var response = await httpClient.GetAsync(request + id))
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
-                entity = JsonConvert.DeserializeObject<Entity>(apiResponse);
+                entity = JsonConvert.DeserializeObject<Results<Entity>>(apiResponse);
             }
-            return entity;
+            return entity.data;
         }
 
         public HttpStatusCode Post(Entity entity)

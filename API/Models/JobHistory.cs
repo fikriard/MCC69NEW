@@ -9,8 +9,6 @@ namespace API.Models
 {
     public class JobHistory
     {
-        
-        
         [Key]
         [ForeignKey("Employees")]
         public int Employee_Id { get; set; }

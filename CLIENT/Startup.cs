@@ -1,4 +1,5 @@
 using API.Context;
+using CLIENT.Repositories.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace CLIENT
@@ -27,6 +29,18 @@ namespace CLIENT
         {
             services.AddControllersWithViews();
 
+            services.AddHttpContextAccessor();
+
+            services.AddScoped<RegionRepository>();
+            services.AddScoped<CountryRepository>();
+            //services.AddScoped<LocationRepository>();
+            //services.AddScoped<DepartmentRepository>();
+            services.AddScoped<EmployeesRepository>();
+            //services.AddScoped<JobsRepository>();
+            //services.AddScoped<JobHistoryRepository>();
+            //services.AddScoped<UserRepository>();
+            //services.AddScoped<RoleRepository>();
+            //services.AddScoped<UserRoleRepository>();
             services.AddSession();
             /*services.JWTConfigure(Configuration);*/
             services.AddDbContext<MyContext>(options =>
@@ -51,6 +65,16 @@ namespace CLIENT
 
             app.UseSession();
             app.UseRouting();
+
+            // Custome Error page
+            app.UseStatusCodePages(async context => {
+                var request = context.HttpContext.Request;
+                var response = context.HttpContext.Response;
+                if (response.StatusCode.Equals((int)HttpStatusCode.NotFound))
+                {
+                    response.Redirect("../home/NotFound404");
+                }
+            });
 
             app.UseAuthorization();
             app.UseAuthentication();

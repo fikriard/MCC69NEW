@@ -182,3 +182,4 @@ C:\Users\acer\source\repos\MCC69_AppNew\MCC69_AppNew\obj\Debug\netcoreapp3.1\Raz
 C:\Users\acer\source\repos\MCC69_AppNew\MCC69_AppNew\bin\Debug\netcoreapp3.1\jose-jwt.dll
 C:\Users\acer\source\repos\MCC69_AppNew\MCC69_AppNew\bin\Debug\netcoreapp3.1\System.Runtime.CompilerServices.Unsafe.dll
 C:\Users\acer\source\repos\MCC69_AppNew\MCC69_AppNew\bin\Debug\netcoreapp3.1\System.Text.Encodings.Web.dll
+C:\Users\acer\source\repos\MCC69_AppNew\MCC69_AppNew\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_AdminLayout.cshtml.g.cs

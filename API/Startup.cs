@@ -36,7 +36,9 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-           
+            // authentication
+            services.AddTokenAuthentication(Configuration);
+
             services.AddScoped<RegionRepository>();
             services.AddScoped<CountryRepository>();
             services.AddScoped<LocationRepository>();
@@ -52,12 +54,13 @@ namespace API
             services.AddCors(option => option.AddPolicy("DefaultPolicy",
                 builder =>
                 {
-                    builder.WithOrigins("https://localhost:44303").WithMethods("GET","POST");
+                    builder.AllowAnyOrigin().AllowAnyMethod();
+                   /* builder.WithOrigins("https://localhost:44303").WithMethods("GET","POST");*/
                 }));
 
             services.AddDbContext<MyContext>(option => option.UseSqlServer(Configuration.GetConnectionString("connection")));
 
-            services.AddTokenAuthentication(Configuration);
+            
 
             //services.AddSwaggerGen(option =>
             //{
@@ -90,9 +93,11 @@ namespace API
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement {
                 {
                     new OpenApiSecurityScheme {
-                        Reference = new OpenApiReference {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
+
+                            Reference = new OpenApiReference 
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
                 } },
 
                 new string[] {}
@@ -100,7 +105,10 @@ namespace API
             });
             });
             // authentication
-            /*services.AddTokenAuthentication(Configuration);*/
+            
+
+
+  
 
         }
 
@@ -124,7 +132,7 @@ namespace API
 
             //    if()
             //});
-
+            
             app.UseRouting();
             app.UseSwagger();
             app.UseSwaggerUI(option =>

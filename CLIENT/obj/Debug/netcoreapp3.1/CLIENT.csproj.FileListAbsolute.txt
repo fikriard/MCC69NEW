@@ -174,3 +174,10 @@ C:\Users\acer\source\repos\MCC69_AppNew\CLIENT\obj\Debug\netcoreapp3.1\CLIENT.dl
 C:\Users\acer\source\repos\MCC69_AppNew\CLIENT\obj\Debug\netcoreapp3.1\CLIENT.pdb
 C:\Users\acer\source\repos\MCC69_AppNew\CLIENT\obj\Debug\netcoreapp3.1\CLIENT.genruntimeconfig.cache
 C:\Users\acer\source\repos\MCC69_AppNew\CLIENT\obj\Debug\netcoreapp3.1\Razor\Views\Country\Index.cshtml.g.cs
+C:\Users\acer\source\repos\MCC69_AppNew\CLIENT\obj\Debug\netcoreapp3.1\Razor\Views\Account\Index.cshtml.g.cs
+C:\Users\acer\source\repos\MCC69_AppNew\CLIENT\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_AdminLayout.cshtml.g.cs
+C:\Users\acer\source\repos\MCC69_AppNew\CLIENT\obj\Debug\netcoreapp3.1\Razor\Views\Region\Index.cshtml.g.cs
+C:\Users\acer\source\repos\MCC69_AppNew\CLIENT\obj\Debug\netcoreapp3.1\Razor\Views\Employees\Index.cshtml.g.cs
+C:\Users\acer\source\repos\MCC69_AppNew\CLIENT\obj\Debug\netcoreapp3.1\Razor\Views\Account\Login.cshtml.g.cs
+C:\Users\acer\source\repos\MCC69_AppNew\CLIENT\obj\Debug\netcoreapp3.1\Razor\Views\Account\Success.cshtml.g.cs
+C:\Users\acer\source\repos\MCC69_AppNew\CLIENT\obj\Debug\netcoreapp3.1\Razor\Views\Home\NotFound.cshtml.g.cs

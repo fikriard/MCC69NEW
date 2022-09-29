@@ -1,0 +1,30 @@
+﻿@model IEnumerable<API.Models.Region>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table"  id="dataTableRegion">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="tbodyregion">
+       
+    </tbody>
+</table>
+
+@section Scripts
+{
+    <script src="~/js/Region/index.js"></script>
+}
+

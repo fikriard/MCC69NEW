@@ -19,7 +19,7 @@ namespace API.Controllers
     public class LoginController : ControllerBase
     {
         UserRepository userRepository;
-        private readonly IConfiguration iconfiguration;
+        private IConfiguration iconfiguration;
         public LoginController(UserRepository userRepository, IConfiguration iconfiguration)
         {
             this.userRepository = userRepository;

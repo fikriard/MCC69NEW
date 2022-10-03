@@ -25,7 +25,14 @@ namespace CLIENT.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (HttpContext.Session.GetString("token") != null)
+            {
+                return View();
+            }
+            else {
+                return RedirectToAction("Index", "Account");
+
+            }
         }
 
         public IActionResult Privacy()
@@ -64,6 +71,15 @@ namespace CLIENT.Controllers
         public IActionResult NotFound404()
         {
             return View("NotFound");
+        }
+
+        public IActionResult Forbidden()
+        {
+            return View("Forbidden");
+        }
+        public IActionResult Unauth()
+        {
+            return View("Unauthorized");
         }
     }
 }

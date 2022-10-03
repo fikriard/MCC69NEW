@@ -1,16 +1,20 @@
 using API.Context;
 using CLIENT.Repositories.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CLIENT
@@ -28,8 +32,8 @@ namespace CLIENT
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-
-            services.AddHttpContextAccessor();
+            services.AddDbContext<MyContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("connection")));
 
             services.AddScoped<RegionRepository>();
             services.AddScoped<CountryRepository>();
@@ -41,10 +45,36 @@ namespace CLIENT
             //services.AddScoped<UserRepository>();
             //services.AddScoped<RoleRepository>();
             //services.AddScoped<UserRoleRepository>();
+            services.AddSession(option =>
+            {
+                option.IdleTimeout = TimeSpan.FromMinutes(15);
+            });
+            services.AddHttpContextAccessor();
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o =>
+            {
+                o.RequireHttpsMetadata = false;
+                var Key = Encoding.UTF8.GetBytes(Configuration["JwtConfig:secret"]);
+                o.SaveToken = true;
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = "localhost",
+                    ValidAudience = "localhost",
+                    IssuerSigningKey = new SymmetricSecurityKey(Key),
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
             services.AddSession();
             /*services.JWTConfigure(Configuration);*/
-            services.AddDbContext<MyContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("connection")));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,9 +93,10 @@ namespace CLIENT
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseSession();
             app.UseRouting();
 
+            app.UseSession();
+ 
             // Custome Error page
             app.UseStatusCodePages(async context => {
                 var request = context.HttpContext.Request;
@@ -74,10 +105,31 @@ namespace CLIENT
                 {
                     response.Redirect("../home/NotFound404");
                 }
+                else if (response.StatusCode.Equals((int)HttpStatusCode.Forbidden))
+                {
+                    response.Redirect("../home/Forbidden");
+                }
+                else if (response.StatusCode.Equals((int)HttpStatusCode.Unauthorized))
+                {
+                        response.Redirect("../home/Unauth");
+                   
+                }
             });
 
-            app.UseAuthorization();
+            app.Use(async (HttpContext context, Func<Task> next) =>
+            {
+                var token = context.Session.GetString("token");
+                if (!string.IsNullOrEmpty(token))
+                {
+                    context.Request.Headers.Add("Authorization", "Bearer " + token.ToString());
+                }
+
+                await next();
+            });
+
             app.UseAuthentication();
+            app.UseAuthorization();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
